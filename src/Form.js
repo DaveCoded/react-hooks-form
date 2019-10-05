@@ -1,8 +1,12 @@
 import React from 'react';
 import useForm from './useForm';
+import validate from './FormValidationRules';
 
 const Form = () => {
-  const { values, handleChange, handleSubmit } = useForm(login);
+  const { values, handleChange, handleSubmit, errors } = useForm(
+    login,
+    validate
+  );
 
   function login() {
     console.log(values);
@@ -18,13 +22,15 @@ const Form = () => {
                 <label className='label'>Email Address</label>
                 <div className='control'>
                   <input
-                    className='input'
+                    className={`input ${errors.email && 'is-danger'}`}
                     type='email'
                     name='email'
                     onChange={handleChange}
-                    value={values.email}
-                    required
+                    value={values.email || ''}
                   />
+                  {errors.email && (
+                    <p className='help is-danger'>{errors.email}</p>
+                  )}
                 </div>
               </div>
               <div className='field'>
@@ -35,8 +41,7 @@ const Form = () => {
                     type='password'
                     name='password'
                     onChange={handleChange}
-                    value={values.password}
-                    required
+                    value={values.password || ''}
                   />
                 </div>
               </div>
